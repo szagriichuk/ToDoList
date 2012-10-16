@@ -1,29 +1,50 @@
 package controllers;
 
-import model.Task;
+
+import controllers.internal.Login;
+import controllers.internal.Logout;
+import models.Task;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.login;
 
 public class Application extends Controller {
-    static Form<Task> taskForm = form(Task.class);
 
-    public static Result index() {
-        return redirect(routes.Application.tasks());
-    }
-
-    public static Result tasks() {
+    public static Result login() {
         return ok(
-                views.html.index.render("Tro - lo - lo ")
+                login.render(form(Login.class))
         );
     }
 
-    public static Result newTask() {
-        return TODO;
+    /**
+     * Handle login form submission.
+     */
+    public static Result authenticate() {
+        Form<Login> loginForm = form(Login.class).bindFromRequest();
+        if(loginForm.hasErrors()) {
+            return badRequest(login.render(loginForm));
+        } else {
+            session("email", loginForm.get().email);
+            return redirect(
+                    routes.Tasks.tasks()
+            );
+        }
+
     }
 
-    public static Result deleteTask(Long id) {
-        return TODO;
+    /**
+     * Logout and clean the session.
+     */
+    public static Result logout() {
+        session().clear();
+        flash("success", "You've been logged out");
+//        Form<Logout> loginForm = form(Logout.class).bindFromRequest();
+
+        return redirect(
+                routes.Application.login()
+        );
     }
+
 
 }

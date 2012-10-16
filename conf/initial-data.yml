@@ -1,0 +1,31 @@
+# Users
+users:
+
+    - !!models.User
+        email:      demo@demo.com
+        name:       Demo User
+        password:   demo
+    
+    - !!models.User
+        email:      admin@admin.com
+        name:       Admin User
+        password:   admin
+    
+    - !!models.User
+        email:      sergii@sergii.com
+        name:       Sergii User
+        password:   sergii
+    
+    - !!models.User
+        email:      martin@martin.com
+        name:       Martin User
+        password:   martin
+ # Task
+
+ tasks:
+
+     - !!models.Task
+         title:      Fix code
+         done:       false
+        assignedTo: !!models.User
+                        email: demo@demo.com

@@ -1,0 +1,36 @@
+@(tasks: List[Task], user: User, taskForm :Form[Task])
+
+<header>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui-1.9.0.custom.css")"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")"/>
+</header>
+
+
+@import helper._
+
+@main(tasks, user, taskForm) {
+
+<h1>@tasks.size() task(s)</h1>
+
+<ul>
+    @for(task <- tasks) {
+    <li>
+        @task.title
+
+        @form(routes.Tasks.deleteTask(task.id)) {
+        <input type="submit" value="Delete">
+        }
+    </li>
+    }
+</ul>
+
+<h2>Add a new task</h2>
+
+@form(routes.Tasks.newTask()) {
+
+
+<input type="submit" value="Create">
+
+}
+
+}
