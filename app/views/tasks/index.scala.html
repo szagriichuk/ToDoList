@@ -1,36 +1,59 @@
 @(tasks: List[Task], user: User, taskForm :Form[Task])
 
-<header>
-    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui-1.9.0.custom.css")"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")"/>
-</header>
-
+<head>
+    <script>
+        $(document).ready(function () {
+                    $("#taskTable").tablesorter();
+                }
+        );
+        $(document).ready(function()
+                {
+                    $("#taskTable").tablesorter( {sortList: [[0,0], [1,0]]} );
+                }
+        );
+    </script>
+</head>
 
 @import helper._
 
 @main(tasks, user, taskForm) {
 
-<h1>@tasks.size() task(s)</h1>
+<h1 class="ui-widget">You have @tasks.size() task(s)</h1>
 
-<ul>
-    @for(task <- tasks) {
-    <li>
-        @task.title
+<table class="tablesorter" id="taskTable">
+    <thead>
+    <tr>
+        <th>Task Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        @for(task <- tasks) {
+    <tr>
+        <td class="label">
+            @task.title
+        </td>
+        <td>
+            @form(routes.Tasks.deleteTask(task.id)) {
+            <input type="submit" value="Delete" class="btn">
+            }
 
-        @form(routes.Tasks.deleteTask(task.id)) {
-        <input type="submit" value="Delete">
-        }
-    </li>
+        </td>
+        <tr>
+
     }
-</ul>
+    </tbody>
+</table>
+<div class="well">
+    <h2>Add a new task</h2>
 
-<h2>Add a new task</h2>
+    @form(routes.Tasks.newTask()) {
 
-@form(routes.Tasks.newTask()) {
+    @inputText(taskForm("title"))
 
+    <input type="submit" value="Create" class="btn">
 
-<input type="submit" value="Create">
+    }
 
-}
-
-}
+    }
+</div>

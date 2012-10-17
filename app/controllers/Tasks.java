@@ -20,28 +20,30 @@ public class Tasks extends Controller {
     }
 
     public static Result tasks() {
+
+        User activeUser = User.getActiveUser();
+
         return ok(
-                index.render(Task.all(), User.getActiveUser(), taskForm)
+                index.render(Task.getAllTasksForUser(activeUser.email), activeUser, taskForm)
         );
     }
 
     public static Result newTask() {
-        return TODO;
-//        Form<Task> filledForm = taskForm.bindFromRequest();
-//        if(filledForm.hasErrors()) {
-//            return badRequest(
-//                    index.render(Task.all(), filledForm)
-//            );
-//        } else {
-//            Task.create(filledForm.get());
-//            return redirect(routes.Tasks.tasks());
-//        }
+        Form<Task> filledForm = taskForm.bindFromRequest();
+        if(filledForm.hasErrors()) {
+            return badRequest(
+                    index.render(Task.all(), User.getActiveUser(), filledForm)
+            );
+        } else {
+            Task.create(filledForm.get(), User.getActiveUser());
+            return redirect(routes.Tasks.tasks());
+        }
     }
 
     public static Result deleteTask(Long id) {
         if (Secured.isOwnerOf(id)) {
             Task.find.ref(id).delete();
-            return ok();
+            return redirect(routes.Tasks.tasks());
         } else {
             return forbidden();
         }

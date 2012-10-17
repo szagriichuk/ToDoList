@@ -6,24 +6,35 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/jquery-ui-1.9.0.custom.css")">
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/style.css")"/>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-play-1.7.1.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-ui-1.9.0.custom.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.8.2.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tablesorter.pager.js")"></script>
+        <script >
+        $(function() {
+            $("table#sortTableExample").tablesorter({ sortList: [[1,0]] });
+        });
+        </script>
     </head>
     <body>
-        <header>
-            <dl id="user">
-                <dt>@user.name <span>(@user.email)</span></dt>
-                <dd>
-                    <a href="@routes.Application.logout()">Logout</a>
-                </dd>
-            </dl>
-        </header>
-        <nav>
-            <h4 class="ui-icon-note"><a href="#/">Dashboard</a></h4>
-            <button id="newGroup">New group</button>
-        </nav>
+
+    <header  class="ui-widget-header">
+        <div class="navbar">
+            <div class="navbar-inner" style="-webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0;">
+                <div class="container">
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="#">TO-DO List</a>
+                        </li>
+                        <li><a href="#">@user.name (@user.email)</a></li>
+                        <li><a href="@routes.Application.logout()">Logout</a></li>
+                     <ul>
+                </div>
+            </div>
+        </div>
+    </header>
         <section id="main">
             @body
         </section>

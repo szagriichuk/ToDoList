@@ -55,6 +55,9 @@ public class User extends Model {
                 .findUnique();
 
         user.isActive = true;
+
+        user.save();
+
         return user;
     }
 

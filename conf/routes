@@ -1,4 +1,4 @@
-GET     /                                   controllers.Tasks.tasks()
+GET     /                                   controllers.Application.login()
 
 # Authentication
 GET     /login                              controllers.Application.login()

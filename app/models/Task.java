@@ -1,10 +1,12 @@
 package models;
 
-import java.util.*;
-import javax.persistence.*;
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
 
-import play.db.ebean.*;
-import play.data.validation.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.util.List;
 
 @Entity
 public class Task extends Model {
@@ -19,21 +21,20 @@ public class Task extends Model {
 
     public boolean done = false;
 
-    public static Finder<Long,Task> find = new Finder<>(
+    public static Finder<Long, Task> find = new Finder<>(
             Long.class, Task.class
     );
 
     public static List<Task> all() {
         return find.all();
-
-        //find.join("project")
-//        .where()
-//                .eq("done", false)
-//                .eq("project.members.email", user)
-//                .findList()
     }
 
-    public static void create(Task task) {
+    public static List<Task> getAllTasksForUser(String userEmail) {
+        return find.where().eq("assignedTo.email", userEmail).findList();
+    }
+
+    public static void create(Task task, User activeUser) {
+        task.assignedTo = activeUser;
         task.save();
     }
 
@@ -42,12 +43,12 @@ public class Task extends Model {
     }
 
     /**
-     * Check if a user is the owner of this task
+     * Check if a userEmail is the owner of this taskId
      */
-    public static boolean isOwner(Long task, String user) {
-        return find.where()
-                .eq("project.members.email", user)
-                .eq("id", task)
+    public static boolean isOwner(Long taskId, String userEmail) {
+        return find.where().
+                eq("id", taskId).
+                eq("assignedTo.email", userEmail)
                 .findRowCount() > 0;
     }
 

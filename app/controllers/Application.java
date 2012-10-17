@@ -4,6 +4,7 @@ package controllers;
 import controllers.internal.Login;
 import controllers.internal.Logout;
 import models.Task;
+import models.User;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -40,6 +41,10 @@ public class Application extends Controller {
         session().clear();
         flash("success", "You've been logged out");
 //        Form<Logout> loginForm = form(Logout.class).bindFromRequest();
+
+        User activeUser = User.getActiveUser();
+        activeUser.isActive = false;
+        activeUser.save();
 
         return redirect(
                 routes.Application.login()

@@ -21,11 +21,3 @@ users:
         name:       Martin User
         password:   martin
  # Task
-
- tasks:
-
-     - !!models.Task
-         title:      Fix code
-         done:       false
-        assignedTo: !!models.User
-                        email: demo@demo.com
