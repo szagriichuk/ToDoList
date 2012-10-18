@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+    <link rel="stylesheet" type="text/css" href="../../public/stylesheets/bootstrap.css">
+</head>
+<body>
+<!-- JS dependencies -->
+<script src="../../public/javascripts/jquery-1.8.2.js"></script>
+<script src="../../public/javascripts/bootstrap.min.js"></script>
+
+<!-- bootbox code -->
+<script type="text/javascript" src="../../public/javascripts/bootbox.min.js"></script>
+<script>
+    $(".btn").click(function(e) {
+        bootbox.alert("Hello world!", function() {
+            console.log("Alert Callback");
+        });
+    });
+</script>
+<script>
+
+</script>
+<a href="#" class="btn primary">OK</a>
+<!-- set up the modal to start hidden and fade in and out -->
+<div id="myModal" class="modal hide fade">
+    <!-- dialog contents -->
+    <div class="modal-body">Hello world!</div>
+    <!-- dialog buttons -->
+    <div class="modal-footer"></div>
+</div>
+</body>
+</html>
