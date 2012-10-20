@@ -49,22 +49,17 @@ public class User extends Model {
      * Authenticate a User.
      */
     public static User authenticate(String email, String password) {
-        User user = find.where()
+
+        return find.where()
                 .eq("email", email)
                 .eq("password", password)
                 .findUnique();
-
-        user.isActive = true;
-
-        user.save();
-
-        return user;
     }
 
-    public static User getActiveUser() {
+    public static User getActiveUser(String email) {
         List<User> users = findAll();
         for (User user : users) {
-            if (user.isActive)
+            if (user.email.equals(email))
                 return user;
         }
         return new NullUser();

@@ -1,0 +1,34 @@
+@(user: User, taskForm :Form[Task])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main(user, taskForm) {
+    
+    <h1>Add new task</h1>
+    
+    @form(routes.Tasks.newTask()) {
+
+        <fieldset>
+        
+            @inputText(taskForm("title"), '_label -> "Task Name")
+            @inputText(taskForm("dueDate"), '_label -> "Due date")
+            @select(
+                            taskForm("priority"),
+                            options(TaskPriority.options),
+                            '_label -> "Priority", '_default -> "-- Choose a priority --",
+                            '_showConstraints -> false
+                        )
+
+
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Create new Task" class="btn primary"> or
+            <a href="@routes.Tasks.index()" class="btn">Cancel</a>
+        </div>
+        
+    }
+    
+}

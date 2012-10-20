@@ -1,4 +1,4 @@
-@(tasks: List[Task], user: User, taskForm :Form[Task])(body: Html)
+@(user: User, taskForm :Form[Task])(body: Html)
 
 <html>
     <head>
@@ -13,41 +13,6 @@
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/bootbox.min.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.tablesorter.pager.js")"></script>
-        <script type="text/javascript">
-            $("a.dialog").click(function (e) {
-                e.preventDefault();
-                bootbox.dialog("I am a custom dialog", [
-                    {
-                        "label":"Success!",
-                        "class":"btn-success",
-                        "callback":function () {
-                            console.log("great success");
-                        }
-                    },
-                    {
-                        "label":"Danger!",
-                        "class":"btn-danger",
-                        "callback":function () {
-                            console.log("uh oh, look out!");
-                        }
-                    },
-                    {
-                        "label":"Click ME!",
-                        "class":"btn-primary",
-                        "callback":function () {
-                            console.log("Primary button");
-                        }
-                    },
-                    {
-                        "label":"Just a button..."
-                    },
-                    {
-                        "Condensed format":function () {
-                            console.log("condensed");
-                        }
-                    }
-                ]);
-            });        </script>
     </head>
     <body>
 
@@ -60,20 +25,12 @@
                             <a href="#">TO-DO List</a>
                         </li>
                         <li><a href="#">@user.name (@user.email)</a></li>
+                        <li><a href="@routes.Tasks.create()">Add a new Task</a></li>
                         <li><a href="@routes.Application.logout()">Logout</a></li>
-                        <li><a href="#" class="dialog">Create New Task</a></li>
                      <ul>
                 </div>
             </div>
         </div>
-        <!-- set up the modal to start hidden and fade in and out -->
-        <div id="createNewTask" class="modal hide fade">
-            <!-- dialog contents -->
-            <div class="modal-body">Hello world!</div>
-            <!-- dialog buttons -->
-            <div class="modal-footer"><a href="#" class="btn primary">OK</a></div>
-        </div>
-
     </header>
         <section id="main">
             @body

@@ -6,9 +6,18 @@ POST    /login                              controllers.Application.authenticate
 GET     /logout                             controllers.Application.logout()
 
 # Tasks
-GET     /tasks                  controllers.Tasks.tasks()
+GET     /tasks                  controllers.Tasks.index
+GET     /list                  controllers.Tasks.list(s ?= "title", o ?= "desc", f ?= "")
 POST    /tasks                  controllers.Tasks.newTask()
 POST    /tasks/:id/delete       controllers.Tasks.deleteTask(id: Long)
+GET    /tasks/:id/delete       controllers.Tasks.deleteTask(id: Long)
+
+# Add task
+GET     /tasks/new               controllers.Tasks.create()
+
+# Edit task
+GET     /tasks/:id              controllers.Tasks.edit(id:Long)
+POST    /tasks/:id              controllers.Tasks.update(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

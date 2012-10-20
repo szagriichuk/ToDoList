@@ -1,59 +1,92 @@
-@(tasks: List[Task], user: User, taskForm :Form[Task])
+@(tasks: List[Task],taskForm :Form[Task],user: User, currentSortBy: String, currentOrder: String, currentFilter: String)
 
 <head>
-    <script>
-        $(document).ready(function () {
-                    $("#taskTable").tablesorter();
-                }
-        );
-        $(document).ready(function()
-                {
-                    $("#taskTable").tablesorter( {sortList: [[0,0], [1,0]]} );
-                }
-        );
-    </script>
 </head>
 
 @import helper._
 
-@main(tasks, user, taskForm) {
+@link(newPage:Int, newSortBy:String) = @{
 
-<h1 class="ui-widget">You have @tasks.size() task(s)</h1>
+    var sortBy = currentSortBy
+    var order = currentOrder
 
-<table class="tablesorter" id="taskTable">
-    <thead>
-    <tr>
-        <th>Task Name</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-        @for(task <- tasks) {
-    <tr>
-        <td class="label">
-            @task.title
-        </td>
-        <td>
-            @form(routes.Tasks.deleteTask(task.id)) {
-            <input type="submit" value="Delete" class="btn">
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
             }
-
-        </td>
-        <tr>
-
-    }
-    </tbody>
-</table>
-<div class="well">
-    <h2>Add a new task</h2>
-
-    @form(routes.Tasks.newTask()) {
-
-    @inputText(taskForm("title"))
-
-    <input type="submit" value="Create" class="btn">
-
+        } else {
+            order = "asc"
+        }
     }
 
-    }
-</div>
+    // Generate the link
+    routes.Tasks.list(sortBy, order, currentFilter)
+
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+    <th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, key)">@title</a>
+    </th>
+}
+
+@main(user, taskForm) {
+
+@if(tasks.size == 0) {
+
+        <div class="well">
+            <em>There are no tasks</em>
+        </div>
+
+    } else {
+
+        <table class="computers zebra-striped">
+            <thead>
+                <tr>
+                    @header("title", "Task name")
+                    @header("dueDate", "Due Date")
+                    @header("priority", "Priority")
+                    @header("done", "Done")
+                </tr>
+            </thead>
+            <tbody>
+
+                @for(task <- tasks) {
+                    <tr>
+                        <td><a href="@routes.Tasks.edit(task.id)">@task.title</a></td>
+                        <td>
+                            @if(task.dueDate == null) {
+                                <em>-</em>
+                            } else {
+                                @task.dueDate.format("dd MMM yyyy")
+                            }
+                        </td>
+                        <td>
+                            @if(task.priority == null) {
+                                <em>-</em>
+                            } else {
+                                @task.priority
+                            }
+                        </td>
+                        <td>
+                            @if(task.done == null) {
+                                <em>-</em>
+                            } else {
+                                @task.done
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+}
+}

@@ -1,0 +1,40 @@
+@(id: Long, user: User,  taskForm :Form[Task])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) }
+
+@main(user, taskForm) {
+
+<h1>Edit ToDo Task</h1>
+@form(routes.Tasks.update(id)) {
+
+    <fieldset>
+
+        @inputText(taskForm("title"), '_label -> "Task Name")
+        @inputText(taskForm("dueDate"), '_label -> "Due date")
+
+        @select(
+                        taskForm("priority"),
+                        options(TaskPriority.options),
+                        '_label -> "Priority", '_default -> "-- Choose a priority --",
+                        '_showConstraints -> false
+                    )
+
+        @checkbox(taskForm("done"), '_label -> "Done ?")(handler = implicitFieldConstructor, implicitly[Lang])
+
+    </fieldset>
+
+    <div class="actions">
+        <input type="submit" value="Save task" class="btn primary"> or
+        <a href="@routes.Tasks.index()" class="btn">Cancel</a>
+    </div>
+
+}
+
+@form(routes.Tasks.deleteTask(id), 'class -> "topRight") {
+<input type="submit" value="Delete Task" class="btn danger">
+}
+
+
+}
